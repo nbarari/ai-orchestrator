@@ -321,3 +321,62 @@ The gate-2-design.md class boundary behavior section should include a note:
 > pinned in this document.
 
 ---
+
+## Gate 3: Mocked Tests Cannot Satisfy Accuracy Correctness Criterion
+
+**Discovered during:** Gate 3 worked example
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+The primary correctness criterion from Gate 2 (top-1 accuracy ≥ 90%) cannot
+be verified by a mocked test suite. All 23 tests pass, but none of them
+exercise real model behavior. Gate 3 in a production system requires actual
+API calls against a labeled evaluation set.
+
+### Implication for Template
+
+The gate-3-verification.md template should include a note in the Behavioral
+Evals section distinguishing mocked coverage (sufficient for contract
+compliance testing) from real eval coverage (required for accuracy criteria).
+
+### Fix
+
+Add a note to the Behavioral Evals section in gate-3-verification.md:
+
+> Mocked tests verify contract compliance and violation handling.
+> They do not verify accuracy criteria that require real model outputs.
+> A production Gate 3 must include real API calls against a labeled
+> evaluation set for any accuracy threshold defined in Gate 2.
+
+---
+
+## Gate 3: Stress Test Requires Deployed Infrastructure
+
+**Discovered during:** Gate 3 worked example
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+The Breaking Point identified in Gate 2 (queue age p95 > 15 minutes) cannot
+be measured in a worked example with no queue infrastructure, no deployed
+service, and no real provider calls. Gate 3 stress testing in production
+requires the actual system to be running.
+
+### Implication for Template
+
+The stress test section of gate-3-verification.md should note that this
+section cannot be completed before the system is deployed in a non-production
+environment. It is a post-deployment verification step, not a pre-deployment
+one. This creates a sequencing dependency that the template should make explicit.
+
+### Fix
+
+Add a note to the Stress Test section:
+
+> Stress testing requires a deployed instance of the system with real
+> provider connections. This section cannot be completed until the system
+> is running in a non-production environment. It is the only Gate 3
+> section that has a hard dependency on deployment.
+
+---
