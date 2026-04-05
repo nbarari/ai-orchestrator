@@ -1,0 +1,69 @@
+# .ai-orchestrator
+
+Project-level configuration for the AI Orchestrator framework.
+This file is read by IDE rules, agents, and CI checks to determine
+which gate criteria are active for this project.
+
+[project]
+name = ai-orchestrator-framework
+version = 0.1
+current_phase = 1
+
+# Build-Time, Runtime, or Both
+ai_deployment_mode = Both
+
+[gate_0]
+# Path to the completed Gate 0 worksheet
+# Leave blank if Gate 0 has not been passed
+worksheet = docs/gate-0.md
+approved = false
+approved_by =
+approved_date =
+
+[gate_1]
+worksheet = docs/gate-1.md
+approved = false
+approved_by =
+approved_date =
+
+[gate_2]
+worksheet = docs/gate-2.md
+approved = false
+approved_by =
+approved_date =
+
+[gate_3]
+worksheet = docs/gate-3.md
+approved = false
+approved_by =
+approved_date =
+
+[gate_4]
+worksheet = docs/gate-4.md
+approved = false
+approved_by =
+approved_date =
+
+[gate_5]
+worksheet = docs/gate-5.md
+approved = false
+approved_by =
+approved_date =
+
+[contracts]
+# Paths to Class Interface Contracts for this project
+class_interface_contract =
+prompt_contracts =
+data_boundary_declaration =
+
+[adrs]
+# Directory where ADRs are stored
+directory = docs/adr/
+
+[runtime_ai]
+# Populated only if ai_deployment_mode is Runtime or Both
+model_provider =
+model_version =
+cost_circuit_breaker_active = false
+observability_tool =
+human_oversight_model = docs/oversight-model.md
