@@ -246,3 +246,51 @@ as an optional closing section to `templates/adr-template.md` so
 incomplete fields are explicitly flagged rather than silently omitted.
 
 ---
+
+## Class Interface Contract: Success Predicate Alignment Section
+
+**Discovered during:** Gate 2 worked example
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+The generated Class Interface Contract included a section explicitly
+mapping contract fields to the three Success Predicate conditions from
+Gate 0 (routing accuracy, operational safety, traceability). This section
+is not in the current Class Interface Contract template but is genuinely
+useful — it makes the contract's relationship to the gate artifacts
+explicit and auditable.
+
+### Fix
+
+Add an optional "Alignment with Success Predicate" section to
+`templates/gate-2-design.md` and the contract template, linking
+contract fields to the conditions defined in Gate 0.
+
+---
+
+## Gate 2: Success Predicate Numerics Section
+
+**Discovered during:** Gate 2 worked example
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+Gate 2 included a "Success Predicate Numerics" section that closes the
+threshold deferral from Gate 0 — pinning accuracy targets, confidence
+thresholds, retry limits, and timeout values as explicit design decisions.
+This section is not in the current gate-2-design.md template but is
+genuinely valuable: it makes Gate 0's composite predicate numerically
+evaluable and gives Gate 3 concrete pass/fail criteria.
+
+### Fix
+
+Add a "Success Predicate Numerics" section to `templates/gate-2-design.md`
+as the last section before Gate Approval, with fields for:
+- Accuracy threshold on evaluation set
+- Confidence threshold below which automated commit is blocked
+- Max retries on invalid output
+- Per-attempt timeout
+- Any always-supervised label categories
+
+---

@@ -1,9 +1,9 @@
 # ADR-001: Claude Sonnet model for document classification
 
-**Status:** Proposed
+**Status:** Accepted
 **Date of decision:** 2026-04-04
 **SDLC phase:** Design (model selection for Runtime AI)
-**Author:** *(incomplete — assign owner)*
+**Author:** ai-orchestrator-framework contributors (worked example)
 
 ---
 
@@ -11,7 +11,7 @@
 
 The project needs a pinned Anthropic model identifier for **LLM-based document classification** (mapping document content to categories or labels via an API call), so that implementations, Prompt Contracts, and audits refer to a single version rather than a floating alias.
 
-At the time this ADR was recorded, `docs/gate-0.md` and `docs/gate-2.md` were not present in the repository. The Problem Class, Success Predicate, and Data Boundary Declaration should be aligned with this choice before any production Runtime AI path is activated.
+The worked example’s Problem Class, Success Predicate, and design artifacts live under `examples/document-classification-agent/` (not `docs/`). **Gate 2** and the **Data Boundary Declaration** are recorded in `examples/document-classification-agent/gate-2.md` and reflected in `examples/document-classification-agent/contracts/`.
 
 ---
 
@@ -25,7 +25,10 @@ All Prompt Contracts, logging configuration, and drift reviews for that workload
 
 ## Alternatives Considered
 
-- No other models or providers have been formally documented as evaluated for this decision at the time of writing.
+- **Smaller / cheaper Anthropic or other-provider models:** Not formally benchmarked for this worked example; could reduce cost at the risk of instruction-following or structured-output quality. Revisit when cost or latency constraints dominate.
+- **Larger / more capable models:** Higher cost and latency; reserved for future ADR if evals show insufficient accuracy on the pinned taxonomy.
+
+*(For a production decision, list models actually evaluated and metrics.)*
 
 ---
 
@@ -49,7 +52,7 @@ Revisit this ADR when any of the following occurs:
 
 - Anthropic deprecates, retires, or materially changes **`claude-sonnet-4-6`**.
 - Document classification gains new categories, new data types in the prompt, or a new oversight level.
-- The Data Boundary Declaration is introduced or updated in a way that affects what may be sent to the model.
+- The Data Boundary Declaration is updated in a way that affects what may be sent to the model (see `examples/document-classification-agent/gate-2.md`).
 
 ---
 
@@ -57,17 +60,17 @@ Revisit this ADR when any of the following occurs:
 
 **Model version rationale:**
 
-Intended direction (not a substitute for a recorded evaluation): use a **Sonnet**-class model where classification requires reliable instruction following and structured outputs, with cost and latency between smaller and larger tiers; confirm against benchmarks and SLOs.
+Use a **Sonnet**-class model where classification requires reliable instruction following and structured outputs, with cost and latency between smaller and larger tiers. Confirm against benchmarks and SLOs in implementation; pinning does not replace measurement.
 
 **Human oversight level for affected actions:**
 
-Examples for later resolution: **advisory** if humans always confirm routing; **supervised** if classification is shown before irreversible steps; **autonomous** only if scope and blast radius are explicitly accepted in gate documentation.
+**Supervised** for **initial deployment** for committing high–blast-radius downstream routes: classification proposals may be stored for audit, but irreversible workflow commits require human or approved release per `examples/document-classification-agent/gate-2.md` Human Oversight Model. Retries and validation-only paths remain bounded and autonomous as documented there.
 
 **Data boundary decision:**
 
-**Blocked until `docs/gate-2.md` exists.** At decision time, no Data Boundary Declaration was present in the repository.
+Document text, taxonomy label definitions, and minimal tenant/document identifiers may cross into the LLM **only as described** in the Data Boundary Declaration in **`examples/document-classification-agent/gate-2.md`** and field-level confirmation in **`examples/document-classification-agent/contracts/prompt-contract-classification.md`**.
 
-Before any implementation sends document text or identifiers to this model, the declaration must list exactly what may cross the boundary (e.g. raw text, redacted excerpts, filenames, metadata) and logging rules must match.
+Filenames and similar PII-adjacent metadata are **omitted from the default prompt** unless governance explicitly permits. Logging must follow the same declaration (structured outputs logged; raw document text logged only when policy allows).
 
 **Pinning expiry plan:**
 
@@ -81,10 +84,8 @@ Before any implementation sends document text or identifiers to this model, the 
 
 | Item | State |
 |------|--------|
-| Decision maker / approver | Incomplete |
-| Alternatives actually evaluated | Incomplete |
-| Model rationale (vs. named alternatives) | Incomplete |
-| Human oversight level for classification | Incomplete |
-| Data boundary (gate-2) | Not present — blocking for production LLM calls |
-
-Close this ADR’s incompletes and move **Status** to **Accepted** after the above are documented.
+| Decision maker / approver | Worked example — use **named individual** in production (see `examples/notes.md`) |
+| Alternatives actually evaluated | Partial — illustrative options only; production should record benchmarks |
+| Model rationale (vs. named alternatives) | Documented at Sonnet-class intent; empirical comparison pending |
+| Human oversight level for classification | **Supervised** for initial deployment (see Gate 2) |
+| Data boundary (gate-2) | **Documented** in `examples/document-classification-agent/gate-2.md` and contracts |
