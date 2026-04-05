@@ -16,12 +16,14 @@ If the user has already confirmed a checklist in this conversation, proceed with
 
 ## Category 1: Schemas, Contracts, and API Definitions
 
-Applies when the request involves:
+Applies when the user asks to create, write, draft, define, generate, build, add, or produce any of the following:
 - A JSON schema or data schema of any kind
 - A contract, interface contract, or class interface contract
 - An API definition, OpenAPI spec, or Swagger file
 - A Prompt Contract for an LLM call
 - Any structured definition of inputs and outputs for a system boundary
+
+Also applies when the user says things like "I need a schema for...", "define the shape of...", "what fields should...", or any phrasing that would result in a schema or contract being written.
 
 **Contract Pre-Flight Checklist**
 
@@ -64,11 +66,13 @@ List each proposed field and the reason it exists. Fields without a documented r
 
 ## Category 2: Architecture Decision Records
 
-Applies when the request involves:
-- Writing or drafting an Architecture Decision Record
-- Creating a file in any `adr/` or `decisions/` directory
-- Documenting a design decision, technology choice, or architectural choice
+Applies when the user asks to create, write, draft, document, record, capture, add, or produce any of the following:
+- An Architecture Decision Record
+- A file in any `adr/` or `decisions/` directory
+- A design decision, technology choice, or architectural choice
 - Any file following the ADR format (status, context, decision, consequences)
+
+Also applies when the user says things like "I need to document the decision to...", "record that we chose...", "capture why we picked...", "note the reasoning for...", or any phrasing that would result in a decision being formally recorded.
 
 **ADR Pre-Flight Checklist**
 
