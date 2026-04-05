@@ -12,6 +12,8 @@ Do not generate the artifact first and add notes afterward. Output the checklist
 
 If the user has already confirmed a checklist in this conversation, proceed without repeating it.
 
+**Known limitation:** This rule reliably intercepts indirect and ambiguous requests. Direct imperative prompts ("Write an ADR for...", "Create a schema for...") may bypass the checklist. Until the v0.3 CLI or v1.0 MCP server provides hard gate enforcement, frame requests as questions or indirect statements to ensure the checklist fires. See `examples/notes.md` for detail and workaround phrasing.
+
 ---
 
 ## Category 1: Schemas, Contracts, and API Definitions
