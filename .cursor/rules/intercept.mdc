@@ -1,0 +1,116 @@
+---
+description: Intercepts requests to generate schemas, contracts, API definitions, or Architecture Decision Records and requires pre-flight confirmation before generation proceeds.
+globs:
+alwaysApply: true
+---
+
+# Design Artifact Intercept
+
+This rule applies to two categories of design artifact. If the user's request falls into either category, output the corresponding checklist and wait for confirmation before generating anything.
+
+Do not generate the artifact first and add notes afterward. Output the checklist, wait for the user to confirm each item, then generate.
+
+If the user has already confirmed a checklist in this conversation, proceed without repeating it.
+
+---
+
+## Category 1: Schemas, Contracts, and API Definitions
+
+Applies when the request involves:
+- A JSON schema or data schema of any kind
+- A contract, interface contract, or class interface contract
+- An API definition, OpenAPI spec, or Swagger file
+- A Prompt Contract for an LLM call
+- Any structured definition of inputs and outputs for a system boundary
+
+**Contract Pre-Flight Checklist**
+
+**1. Problem Class**
+Is `docs/gate-0.md` present and does it define the Problem Class this contract serves?
+- Yes — link: `docs/gate-0.md`
+- No — Gate 0 is incomplete. Treat this contract as a draft until it exists.
+
+**2. Valid Input and Output**
+State in plain language what a valid input looks like and what a valid output looks like at the class level.
+
+*User response required before proceeding.*
+
+**3. Class Boundary Behavior**
+What does the system do when it receives an input adjacent to the class but outside it?
+
+*User response required before proceeding.*
+
+**4. PII and Sensitive Data**
+Does the schema include email addresses, user IDs, names, phone numbers, IP addresses, device identifiers, financial data, health data, or any field that could identify a person?
+- No — proceed
+- Yes — is this covered by the Data Boundary Declaration in `docs/gate-2.md`?
+  - Yes — confirmed
+  - No declaration exists — do not include PII fields until one exists and explicitly permits them
+
+**5. Field Justification**
+List each proposed field and the reason it exists. Fields without a documented reason may be scope creep.
+
+*User response required before proceeding.*
+
+Once confirmed, apply these requirements to the generated artifact:
+- Set `additionalProperties: false` unless there is a documented reason not to
+- Include a `contractVersion` field for pinning and audit
+- Describe valid and invalid inputs explicitly in the schema description
+- For Prompt Contracts: include input structure, output structure, boundary behavior on violation, model version, and Data Boundary compliance per field
+
+---
+
+## Category 2: Architecture Decision Records
+
+Applies when the request involves:
+- Writing or drafting an Architecture Decision Record
+- Creating a file in any `adr/` directory
+- Documenting a design decision, technology choice, or architectural choice
+- Any file following the ADR format (status, context, decision, consequences)
+
+**ADR Pre-Flight Checklist**
+
+**1. Decision Date**
+When was this decision actually made? This must be the date the decision occurred, not today's date unless the decision is being made right now.
+
+*User response required before proceeding.*
+
+**2. Decision Maker**
+Who made or approved this decision?
+
+*User response required before proceeding.*
+
+**3. Context**
+What situation made this decision necessary? Do not infer this from surrounding code. If the context is being reconstructed from the implementation rather than recalled from the actual decision, say so explicitly in the ADR.
+
+*User response required before proceeding.*
+
+**4. Decision**
+What was decided? State it as a single declarative sentence.
+
+*User response required before proceeding.*
+
+**5. Alternatives Considered**
+What other options were evaluated and why was each not chosen? If no alternatives were considered, say so — this is important context for future readers.
+
+*User response required before proceeding.*
+
+**6. Review Trigger**
+What event would require this ADR to be revisited?
+
+*User response required before proceeding.*
+
+**7. Runtime AI Fields**
+If this ADR covers a model, provider, LLM call, data boundary, or human oversight decision, confirm:
+- Model version rationale: why this version over alternatives?
+- Human oversight level for affected actions: autonomous, supervised, or advisory?
+- Data boundary decision: what data was permitted to cross into LLM calls and on what basis?
+- Pinning expiry plan: what happens when this model version is deprecated?
+
+Respond N/A if this ADR does not involve Runtime AI.
+
+Once confirmed, generate the ADR using `templates/adr-template.md` with these requirements:
+- Status must be one of: Proposed, Accepted, Deprecated, Superseded
+- Date of decision must reflect when the decision was actually made
+- If context was reconstructed from code rather than recalled directly, note this in the Context field
+- Do not document alternatives the user has not confirmed were actually evaluated
