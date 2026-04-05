@@ -1,187 +1,173 @@
-# 📖 The AI Orchestrator's Curriculum
+# The AI Orchestrator's Curriculum
 
-## The Manifesto
+## Overview
 
-In the age of Large Language Models, the bottleneck of software development has shifted. **Syntax is now a commodity. Context is the new scarcity.**
+Large Language Models have changed where the bottleneck in software development sits. Writing code is no longer the hard part. Defining what should be built, specifying it precisely enough that AI can build it correctly, and verifying the result without reading every line of output — that is where the work is now.
 
-Most people respond to this shift by becoming better prompt engineers — asking AI for better code. An **AI Orchestrator** responds differently. They treat LLMs as a high-velocity construction crew and themselves as the architect: responsible for the blueprint, the contracts, the verification criteria, and the long-term cost of ownership.
-
-This is not a role that requires the ability to write code. It requires the ability to **define systems precisely enough that AI can safely build them** — and to verify that what was built matches what was designed.
-
-The distinction between a prompt engineer and an AI Orchestrator is not skill level. It is **where you apply your thinking.**
-
-A prompt engineer asks: *"How do I get the AI to write this?"*
-An AI Orchestrator asks: *"What class of problems does this system handle, and how do I define that precisely enough that AI can safely build it?"*
-
-This curriculum provides the theoretical foundation for that shift. It maps to the [AI Orchestrator's SDLC Manual](./manual.md) — the curriculum explains *why* the gates exist, the manual defines *how* to pass them.
+This curriculum covers the theoretical foundation for that kind of work. It is organized as a reading list across six levels, from failure mode fundamentals through long-term governance. Each level maps to one or more phases in the [AI Orchestrator's SDLC Manual](./manual.md).
 
 ---
 
-## A Note on the Orchestrator's Role
+## The Orchestrator's Role
 
-Nothing in this curriculum assumes you write code. The Orchestrator's job is upstream of code:
+Nothing in this curriculum assumes coding ability. The Orchestrator's work happens upstream of implementation:
 
-- **You define** what the system handles and what it does not.
-- **You specify** the contracts that AI and engineers build against.
-- **You determine** what "correct" looks like before a single line is written.
-- **You require** the verification, observability, and operational standards that make the system trustworthy.
-- **AI and engineers execute** against those definitions.
+- Defining what the system handles and what it does not
+- Specifying the contracts that AI and engineers build against
+- Determining what "correct" looks like before implementation begins
+- Requiring the verification, observability, and operational standards that make the system trustworthy
 
-The value of the Orchestrator is not in the implementation — it is in the precision of the design. A vague design produces a system that technically works but is unmaintainable, untestable, and impossible to hand off. A precise design produces a system that AI can build, engineers can verify, and operators can own.
-
----
-
-## A Note on AI Deployment Mode
-
-Before engaging with this curriculum, clarify which of the following applies to your system — because the concerns are different:
-
-**Build-Time AI:** AI is used to write, test, or document the system during development. No LLM runs when the system is in production. The primary concerns are verification, structural integrity, and documentation discipline.
-
-**Runtime AI:** An LLM executes as part of the system's live operation — processing inputs, generating outputs, or taking actions on behalf of users or other systems. Build-time concerns apply, plus additional concerns: operational cost, data classification, provider reliability, observability, and human oversight of autonomous actions.
-
-**Both:** The system is built with AI assistance and also runs AI components in production. All concerns apply.
-
-This distinction surfaces throughout the curriculum. Where a concern applies only to Runtime AI, it is noted explicitly.
+AI and engineers execute against those definitions. The Orchestrator is responsible for the precision of the design. A vague design produces a system that may technically function but cannot be verified, transferred, or maintained. A precise design can be built by AI, verified by engineers, and operated by whoever takes ownership.
 
 ---
 
-## 🛠️ The Orchestrator's Control Artifacts
+## AI Deployment Mode
 
-These are what an Orchestrator produces. They are not code — they are **design artifacts** that constrain what AI can build and define what correct looks like before implementation begins.
+Before working through this curriculum, identify which of the following applies to your system. The concerns differ substantially.
+
+**Build-Time AI:** AI assists in writing, testing, or documenting the system during development. No LLM runs when the system is in production. Primary concerns are verification, structural integrity, and documentation discipline.
+
+**Runtime AI:** An LLM executes as part of the live system, processing inputs, generating outputs, or taking actions. All Build-Time concerns apply, plus: operational cost, data classification, provider reliability, observability, and human oversight of autonomous actions.
+
+**Both:** The system is built with AI assistance and runs AI components in production. All concerns apply.
+
+Where a concern applies only to Runtime AI, it is noted explicitly throughout this curriculum.
+
+---
+
+## Control Artifacts
+
+The Orchestrator's primary output is design artifacts, not code. These artifacts constrain what AI can build and define correctness before implementation begins.
 
 | Artifact | Purpose | SDLC Gate |
 |---|---|---|
-| **Problem Class Definition** | Bounds what the system handles and what it explicitly does not | Gate 0 — Concept Validation |
-| **Success Predicate** | Defines the logical condition for correctness at the class level | Gate 0 — Concept Validation |
-| **AI Deployment Mode** | Declares whether AI is present at build time, runtime, or both — determines which gate criteria apply | Gate 0 — Concept Validation |
-| **System Context Diagrams (C4)** | Environmental map — where the system lives and what it touches | Gate 2 — Architecture |
-| **Class Interface Contracts** | Rigid input/output definitions the AI builds against | Gate 2 — Architecture |
-| **Prompt Contracts** | The AI-specific form of interface contracts — what goes into an LLM call and what must come out | Gate 2 — Architecture |
-| **Data Boundary Declaration** | Documents what data crosses into LLM calls and whether it is subject to classification, residency, or privacy constraints | Gate 2 — Architecture |
-| **Human Oversight Model** | Defines which system actions are autonomous, supervised, or advisory | Gate 2 — Architecture |
-| **ADRs (Architecture Decision Records)** | Long-term memory for decisions that LLMs and rotating teams cannot retain | Gate 2 — Architecture |
-| **Behavioral Eval Criteria** | The definition of what the system must prove — which AI or engineers then implement as tests | Gate 3 — Technical Verification |
-| **Runbooks & SOPs** | Operational contracts — how the system is owned, not just how it was built | Gate 4 — Operational Readiness |
-
-The curriculum below provides the theoretical grounding for each of these artifacts. Every level maps back to one or more of them.
+| Problem Class Definition | Bounds what the system handles and what it explicitly does not | Gate 0 |
+| Success Predicate | Defines the logical condition for correctness at the class level | Gate 0 |
+| AI Deployment Mode | Declares whether AI is present at build time, runtime, or both | Gate 0 |
+| System Context Diagrams (C4) | Maps where the system lives and what it connects to | Gate 2 |
+| Class Interface Contracts | Defines the input/output schema the AI builds against | Gate 2 |
+| Prompt Contracts | Defines the structure of inputs to and expected outputs from each LLM call | Gate 2 |
+| Data Boundary Declaration | Documents what data crosses into LLM calls and any applicable constraints | Gate 2 |
+| Human Oversight Model | Defines which system actions are autonomous, supervised, or advisory | Gate 2 |
+| ADRs (Architecture Decision Records) | Records design decisions and their reasoning for future reference | Gate 2 |
+| Behavioral Eval Criteria | Defines what the system must demonstrate; engineers implement the tests | Gate 3 |
+| Runbooks and SOPs | Documents how the system is operated and maintained | Gate 4 |
 
 ---
 
-## 🗺️ The Learning Path (Levels 0–6)
+## Learning Path
 
----
+### Level 0: Failure Modes of Prompt Engineering
 
-### Level 0: The Failure Modes of Prompt Engineering (The Entry Point)
+*Why prompt engineering fails at scale, before investing in the alternative.*
 
-*Focus: Understanding why prompt engineering fails at scale — before investing in the alternative.*
+Three failure modes recur in systems built primarily through iterative prompting:
 
-This level exists because the rest of the curriculum only makes sense if you understand the specific pain it addresses. If you have never watched a prompt-engineered system become unmaintainable, start here.
+**Structural amnesia.** LLMs have no memory between sessions. Decisions accumulate in chat history rather than in durable documentation. The result is a system that cannot be explained, modified, or handed off with confidence. The corrective is documentation that lives outside the conversation: ADRs, class definitions, interface contracts.
 
-**The three failure modes to internalize:**
+**Nondeterminism without contracts.** The same prompt produces different outputs across model versions, temperature settings, and time. Without a defined contract for what correct looks like at the class level, there is no principled way to detect whether the system is working or drifting. The corrective is a Success Predicate and behavioral eval criteria defined before implementation begins. Note that defining correctness criteria for nondeterministic systems is an active area of development in the field; what matters most is the precision of the criteria, not the specific testing methodology used.
 
-**1. Structural amnesia.** LLMs have no memory between sessions. Every conversation starts from zero. A system built through iterative prompting accumulates decisions that exist nowhere except in chat history — and chat history is not architecture. The result is a system no one can fully describe, including the person who built it. The Orchestrator's response is documentation that exists outside the conversation: ADRs, class definitions, interface contracts.
-
-**2. Nondeterminism without contracts.** The same prompt produces different outputs across model versions, temperature settings, and time. Without a defined contract for what "correct" looks like at the class level, there is no principled way to know whether the system is working or slowly drifting. The Orchestrator's response is a Success Predicate and behavioral eval criteria defined before implementation begins. Note: defining what correct looks like for nondeterministic systems is an active area of development in the field — the criteria you define matter more than the methodology used to test them.
-
-**3. Scope creep as the default.** LLMs are optimized to be helpful. Left unconstrained, they generate more than asked — more features, more abstraction, more complexity. Without explicit class boundaries, the system grows until it is unmaintainable. The Orchestrator's response is a Problem Class Definition with an explicit Anti-Scope.
+**Scope creep as the default.** LLMs generate more than asked when left unconstrained. Without explicit class boundaries, systems grow until they cannot be maintained. The corrective is a Problem Class Definition with an explicit Anti-Scope.
 
 **Reading:**
-- **[How Complex Systems Fail](https://how.complexsystems.fail/) — Dr. Richard Cook.** Eighteen observations about why failures in complex systems are rarely caused by a single root cause. Apply this to AI-assisted development: "AI hallucination" is not a primary cause of failure — it is a symptom of absent contracts, undefined class boundaries, and insufficient verification criteria. This reframe is the foundation of the Orchestrator mindset.
+[How Complex Systems Fail](https://how.complexsystems.fail/) by Dr. Richard Cook. Eighteen observations on failure in complex systems. The central reframe for this curriculum: AI hallucination is a symptom of absent contracts and undefined boundaries, not a root cause.
 
 ---
 
-### Level 1: Mental Models (The Foundation)
+### Level 1: Mental Models
 
-*Focus: Understanding how parts interact to form a whole.*
+*Understanding how components interact as a system.*
 
-- **Thinking in Systems — Donella Meadows.** Feedback loops, stocks, flows, and leverage points. Essential for defining a Success Predicate that actually measures system behavior rather than a local proxy metric. If you cannot describe the feedback loop your system creates, you do not yet understand what you are building. Non-coders often have an advantage here — systems thinking is not about code, it is about relationships between components.
+**Thinking in Systems by Donella Meadows.** Covers feedback loops, stocks, flows, and leverage points. Useful for defining a Success Predicate that measures actual system behavior rather than a proxy metric. Systems thinking does not require coding ability; it concerns relationships between components, which is where the Orchestrator's work is focused.
 
-- **A Philosophy of Software Design — John Ousterhout.** The concept of "Deep Modules" — interfaces that are simple on the outside but handle substantial complexity inside. As an Orchestrator, use this to evaluate whether AI has produced a clean design or shallow sprawl. You do not need to read the code to ask: *"Is this interface simple? Can someone who didn't build it use it without understanding its internals?"* If the answer is no, the design has failed regardless of whether the code works.
-
----
-
-### Level 2: Contract-First Design (The Language of Intent)
-
-*Focus: Creating the rules of engagement that AI cannot break.*
-
-- **[OpenAPI / JSON Schema](https://swagger.io/specification/) — Concepts, not syntax.** Schemas define what valid inputs and outputs look like for a system — the shape of data that crosses a boundary. As an Orchestrator, you do not write schemas; you define the *requirements* that schemas must enforce, and AI or engineers produce the schemas against those requirements. The Orchestrator's Rule: never ask AI to build anything until it has agreed to a contract. The contract is not documentation — it is the constraint. Understanding what schemas are and what they enforce is sufficient. Writing them is not required.
-
-- **[Design Patterns](https://refactoring.guru/design-patterns) — Refactoring.Guru.** Patterns are compressed context — a shared vocabulary between the Orchestrator and the construction crew. Telling AI to implement a "Strategy Pattern" or an "Observer Pattern" is more precise and more efficient than describing the behavior in prose. You do not need to implement patterns; you need to recognize which pattern fits the problem class and direct AI accordingly. Refactoring.Guru uses visual diagrams and plain-language explanations that do not require coding experience.
-
-- **Stateless Service Design — Foundational Principle.** AI systems that maintain state inside a running process are fragile — they cannot scale horizontally, cannot recover cleanly from failures, and create hidden dependencies between requests. As an Orchestrator, require that engineers explain where state lives and how it is managed. The right answer is almost always: state lives in an external store, not inside the service. You do not need to implement this; you need to ask the question and require a clear answer before Phase 3 concludes. *Applies primarily to Runtime AI systems.*
-
-- **[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) — Yao et al.** The foundational paper for understanding how AI agents interleave reasoning and action. Before designing any system where AI takes real-world actions — sending messages, modifying data, triggering deployments — understand what is happening underneath. The Orchestrator must define the boundary between AI reasoning steps and AI executable actions. This paper establishes the core vocabulary for that boundary. Read the abstract and the examples; the mathematical notation is not required. **Note:** The field has moved significantly since this paper was published in 2022 — chain-of-thought variants, tool-use architectures, and multi-agent coordination patterns have all built on this foundation. Read ReAct for the mental model; supplement with current practitioner writing for implementation patterns. *Applies to Runtime AI systems.*
+**A Philosophy of Software Design by John Ousterhout.** Introduces the concept of deep modules: interfaces that are simple on the outside and handle substantial complexity inside. Useful for evaluating whether AI has produced a clean design. The relevant question is not whether the code is correct but whether the interface is simple enough that someone unfamiliar with the implementation can use it correctly.
 
 ---
 
-### Level 3: Structural Mapping (The Blueprint)
+### Level 2: Contract-First Design
 
-*Focus: Defining boundaries so AI does not create unmaintainable systems.*
+*Defining the rules of engagement before implementation begins.*
 
-- **[The C4 Model](https://c4model.com/) — Simon Brown.** A four-level diagramming approach for describing software systems. Focus on Level 1 (Context — what the system is and what it talks to) and Level 2 (Container — what the major components are). These diagrams are the Orchestrator's primary design tool — they keep AI's worldview consistent across sessions and communicate the Problem Class boundary visually. C4 diagrams require no coding knowledge. They are boxes, arrows, and labels. The C4 website includes free tooling and templates.
+**[OpenAPI / JSON Schema](https://swagger.io/specification/) — concepts, not syntax.** Schemas define the shape of data that crosses a system boundary. The Orchestrator's role is to define the requirements that schemas must enforce; AI or engineers produce the schemas against those requirements. Writing schemas is not required. Understanding what they constrain and why they matter is.
 
-- **[Context Mapping](https://github.com/ddd-crew/context-mapping) — Domain-Driven Design.** A method for defining where one system ends and another begins. This is the theoretical foundation of the Class Interface Contract — you cannot write a contract for an interface you have not yet bounded. Context Mapping gives non-coders a rigorous vocabulary for the conversations that happen at system boundaries: who owns what, what agreements exist between systems, and what happens when those agreements change.
+The core rule: do not ask AI to build anything until it has agreed to a contract. The contract is the constraint, not documentation of something that already exists.
 
-- **Context Engineering — Emerging Practice.** How to structure and manage what AI knows at each step of a long-running workflow. LLMs degrade as their context windows fill — an AI agent that has lost track of its own state is a liability, not an asset. As an Orchestrator, you do not implement context management; you require it as a design constraint and ask the right questions: *"What does the AI know at this step? What has it forgotten? How do we ensure it has what it needs without exceeding its limits? What happens when context is lost mid-task?"* This is an active area of development — follow Anthropic's published research and current practitioner writing rather than treating any single source as definitive. *Applies to Runtime AI systems.*
+**[Design Patterns](https://refactoring.guru/design-patterns) by Refactoring.Guru.** Patterns are compressed vocabulary for communicating intent to AI. Specifying that a component should use a Strategy Pattern or an Observer Pattern is more precise and more efficient than describing the behavior in prose. Refactoring.Guru presents patterns with diagrams and plain-language explanations that do not require coding experience.
 
----
+**Stateless service design.** Systems that maintain state inside a running process are difficult to scale and recover. As an Orchestrator, require that engineers explain where state lives and how it is managed. State should live in an external store, not inside the service. This is a design question, not an implementation question. *Applies to Runtime AI systems.*
 
-### Level 4: Verification & Integrity (The Safety Net)
-
-*Focus: Defining what correct looks like so that AI and engineers can prove it.*
-
-- **Test-Driven Design as Philosophy — Kent Beck (adapted).** The Orchestrator's version of test-driven development is not about writing tests — it is about defining the conditions that tests must verify before implementation begins. This is a design discipline, not a coding discipline. Before directing AI to build anything, answer: *"What must be true for this to be considered correct? What inputs should produce what outputs? What should happen at the class boundary?"* Those answers become the criteria that AI or engineers implement as tests. The philosophy matters more than the syntax.
-
-- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/).** The specific risks introduced by AI-generated code and agentic systems — prompt injection, insecure output handling, excessive agency, and others. As an Orchestrator, you do not fix these vulnerabilities; you design against them at Phase 3 and require that they be addressed before Gate 4. Understanding what they are and why they occur is sufficient. This document is written for a general technical audience and does not require coding experience. *Applies to Runtime AI systems; some items apply to Build-Time AI as well.*
-
-- **LLM Evaluation — Current Practitioner Writing.** How do you verify that an AI system is producing correct outputs when "correct" cannot always be defined as an exact match? This is a largely unsolved problem at the industry level. The Orchestrator's role is to define the behavioral eval criteria — the description of what good looks like, including edge cases and failure modes — and to require that AI or engineers implement those criteria using whatever methodology is current at the time of implementation. Domain expertise, not coding expertise, is what makes eval criteria valuable. A non-coder who deeply understands the problem class will write better eval criteria than a coder who does not. Start with [Hamel Husain's writing on evals](https://hamel.dev) as a practitioner entry point — treat it as a starting point for current practice rather than a fixed reference, as this field is evolving rapidly. *Applies to Runtime AI systems.*
-
-- **[Black-Box Thinking](https://www.softwaretestinghelp.com/black-box-testing/).** Verifying a system by its inputs and outputs, without knowledge of its internal implementation. For an Orchestrator who does not read code, black-box thinking is not a limitation — it is the natural verification mode. You define what goes in and what must come out. The Class Interface Contract is a black-box specification. Require that verification suites test the contracts you defined, and evaluate results at the boundary level. Internal implementation is the engineer's domain. Correctness at the boundary is the Orchestrator's.
+**[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) by Yao et al.** The foundational paper for understanding how AI agents interleave reasoning and action. The Orchestrator must define the boundary between AI reasoning steps and AI executable actions before any agentic system is designed. This paper establishes the vocabulary for that boundary. Reading the abstract and examples is sufficient; the mathematical notation is not required. Note that the field has moved significantly since this paper's 2022 publication. Read it for the mental model, then supplement with current practitioner writing for implementation patterns. *Applies to Runtime AI systems.*
 
 ---
 
-### Level 5: Observability & Socio-Technical Strategy (The Maintenance Loop)
+### Level 3: Structural Mapping
 
-*Focus: Ensuring the system remains human-readable and operationally honest over time.*
+*Defining system boundaries so AI does not produce unmaintainable output.*
 
-- **Team Topologies — Skelton & Pais.** Cognitive Load is the metric that determines whether a system is maintainable or a liability from day one. If the system exceeds the cognitive load of the team that owns it, it will be abandoned or worked around — regardless of how well it was built. As an Orchestrator, design for cognitive load as a first-class constraint: *"Can the team that will own this system understand it well enough to operate, debug, and evolve it?"* If not, the design is not finished.
+**[The C4 Model](https://c4model.com/) by Simon Brown.** A four-level diagramming approach for describing software systems. Focus on Level 1 (Context: what the system is and what it connects to) and Level 2 (Container: what the major components are). These diagrams are the Orchestrator's primary tool for keeping AI's worldview consistent across sessions and for communicating Problem Class boundaries visually. C4 diagrams require no coding knowledge; they use boxes, arrows, and labels. The C4 website provides free tooling and templates.
 
-- **Accelerate — Nicole Forsgren et al.** Four metrics that determine whether a system is actually improving engineering outcomes: Deployment Frequency, Lead Time for Changes, Mean Time to Recovery (MTTR), and Change Failure Rate. Establish baselines at Phase 7. A system that ships quickly but degrades recovery time has not improved engineering — it has moved risk. These metrics do not require technical implementation knowledge to understand or to require.
+**[Context Mapping](https://github.com/ddd-crew/context-mapping) from Domain-Driven Design.** A method for defining where one system ends and another begins. You cannot write a contract for an interface that has not been bounded. Context Mapping provides a rigorous vocabulary for conversations at system boundaries: who owns what, what agreements exist, and what happens when those agreements change.
 
-- **Observability for Agentic Systems.** The ability to reconstruct what happened inside a system after the fact. For AI systems, this means every AI decision that affects system state must be reconstructable from logs. As an Orchestrator, you do not configure observability tools — you require observability as a Phase 3 design constraint and evaluate it at Gate 4. The questions to ask: *"Can we see what the AI was given as input? Can we see what it decided? Can we see what it did? Can we reconstruct a failure without the original builder? Are we logging this in a way that complies with our data classification requirements?"* If any answer is no, the system is not ready for production. LLM-specific observability tooling — platforms that capture prompt/response pairs, trace agent decision chains, and surface latency and failure patterns — is an active and fast-moving category. Evaluate current options at the time of implementation; LangSmith and Langfuse are current examples of this category, not permanent recommendations. *Applies to Runtime AI systems.*
-
----
-
-### Level 6: Strategic Governance (The Long Game)
-
-*Focus: Managing the evolution of a system class over years, not sprints.*
-
-- **[Architecture Decision Records (ADRs)](https://adr.github.io/).** A lightweight method for documenting design decisions — what was decided, why, what alternatives were considered, and what the consequences are. ADRs are written at the moment of decision, not retrospectively. They are the Orchestrator's primary tool for ensuring that the reasoning behind design choices survives team changes, model updates, and time. An ADR requires no technical knowledge to write — it requires the discipline to document decisions before moving on. This is where the Orchestrator's long-term value compounds. For Runtime AI systems: ADRs must include model version rationale, human oversight decisions, and data boundary decisions — these are the choices most likely to need revisiting as the system ages.
-
-- **[Wardley Mapping](https://learnwardleymapping.com/).** A strategic tool for deciding what to build vs. what to buy or use as a commodity. Applied to AI orchestration: use Wardley Maps to determine which components of your system class are genuinely differentiated and which should be delegated to existing tools or services. This prevents the common failure mode of directing AI to build custom infrastructure for commodity problems. Wardley Mapping requires no technical background — it is a strategy and positioning tool that happens to apply well to technology decisions.
-
-- **[Failure Mode and Effects Analysis (FMEA)](https://asq.org/quality-resources/fmea).** A systematic method for identifying failure modes before they occur — what could fail, why, and what the downstream effect would be. Apply this in Phase 3 when mapping unhappy paths and class boundary behavior. As an Orchestrator, FMEA is a design conversation, not a technical analysis: *"What breaks here? What happens downstream when it does? How do we reduce the blast radius?"* For Runtime AI systems: explicitly include LLM provider unavailability, model version deprecation, and cost overrun as failure modes — these are not edge cases, they are scheduled events in the lifecycle of any production AI system. Domain knowledge drives better FMEA than technical knowledge does.
+**Context engineering.** How to structure and manage what AI knows at each step of a long-running workflow. LLM performance degrades as context windows fill. An agent that has lost track of its own state becomes unpredictable. As an Orchestrator, require context management as a design constraint and ask: what does the AI know at this step, what has it lost, and what happens when context is exhausted mid-task? This is an active area of research. Follow Anthropic's published work and current practitioner writing rather than relying on any single source. *Applies to Runtime AI systems.*
 
 ---
 
-## 📋 Prerequisites for the Transition
+### Level 4: Verification and Integrity
 
-To move from prompt engineer to AI Orchestrator, develop these three capabilities:
+*Defining what correct looks like so that AI and engineers can demonstrate it.*
 
-**Structural Reading.** The ability to evaluate a system's design through diagrams, contracts, and ADRs — not source code. An Orchestrator who can read a C4 diagram, evaluate a class interface contract, and identify gaps in an ADR can govern a system they cannot implement. This is the primary verification skill for non-coding architects.
+**Test-driven design as philosophy, adapted from Kent Beck.** The Orchestrator's application of this principle is not about writing tests. It is about specifying the conditions that tests must verify before implementation begins. Before directing AI to build anything, answer: what must be true for this to be considered correct, what inputs should produce what outputs, and what should happen at the class boundary? Those answers become the criteria that AI or engineers implement as tests. The discipline of specifying correctness before implementation is the transferable principle.
 
-**Abstraction Discipline.** The ability to describe systems in terms of boundaries, interfaces, and data flows rather than features and implementation details. The Class Interface Contract requires this — you must be able to define what the system does at its boundary before specifying, or directing AI to determine, how it does it. This is a design skill, not a technical skill.
+**[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/).** Covers the specific risks introduced by AI-generated code and agentic systems, including prompt injection, insecure output handling, and excessive agency. The Orchestrator's role is to design against these risks in Phase 3 and require that they are addressed before Gate 4. This document is written for a general technical audience and does not require coding experience. *Applies to Runtime AI systems; some items also apply to Build-Time AI.*
 
-**Adversarial Specification.** The ability to define failure cases, class boundary scenarios, and edge cases that verification must cover — before implementation begins. The default AI system handles the happy path. Your job as Orchestrator is to specify the adversarial cases that reveal whether the class definition holds under real conditions. Domain expertise, not coding expertise, is what makes these specifications valuable.
+**LLM evaluation methodology.** Verifying that an AI system produces correct outputs when correctness cannot be defined as an exact string match is a largely unsolved problem at the industry level. The Orchestrator defines the behavioral eval criteria: what good looks like, what failure looks like, and what the boundary cases are. AI or engineers implement those criteria using whatever methodology is current. Domain expertise in the problem class produces better eval criteria than coding expertise does. [Hamel Husain's writing on evals](https://hamel.dev) is a useful practitioner entry point, though the field is moving quickly enough that it should be treated as a starting point rather than a definitive reference. *Applies to Runtime AI systems.*
+
+**[Black-box testing principles](https://www.softwaretestinghelp.com/black-box-testing/).** Verifying a system by its inputs and outputs without knowledge of its internal implementation. For an Orchestrator who does not read code, this is the natural verification mode. The Class Interface Contract is a black-box specification. Require that verification suites demonstrate compliance with the contracts defined in Phase 3.
 
 ---
 
-## 🚀 How to Navigate This Curriculum
+### Level 5: Observability and Socio-Technical Strategy
 
-**Levels 0–2** are for immediate improvement in daily AI-directed work. Start here regardless of experience level.
+*Keeping the system operationally honest over time.*
 
-**Levels 3–4** are for Orchestrators designing multi-component or production systems. Apply these before Phase 3 of any high-risk SDLC engagement.
+**Team Topologies by Skelton and Pais.** Introduces cognitive load as a design constraint. A system that exceeds the cognitive load of the team that owns it will be worked around or abandoned regardless of how well it was built. Before finalizing a design, verify that the team responsible for operating it can understand it well enough to debug and evolve it.
 
-**Levels 5–6** are for Orchestrators managing systems over time or governing teams that use AI at scale. The governance and observability concerns here become critical as systems age.
+**Accelerate by Nicole Forsgren et al.** Covers four metrics for evaluating whether a system improves engineering outcomes: Deployment Frequency, Lead Time for Changes, Mean Time to Recovery, and Change Failure Rate. Establish baselines at Phase 7. A system that ships quickly but increases recovery time has traded one problem for another.
 
-The curriculum is not a prerequisite for the manual — you can apply the SDLC framework before finishing the reading list. But every gate in the manual will make more sense with the corresponding theoretical foundation behind it.
+**Observability for agentic systems.** The ability to reconstruct what happened inside a system after the fact. For AI systems, each AI decision that affects system state must be reconstructable from logs. As an Orchestrator, require observability as a Phase 3 design constraint and verify it at Gate 4. Key questions: can we see what the AI was given as input, what it decided, and what it did? Can we reconstruct a failure without access to the original builder? Is the logging approach compliant with the Data Boundary Declaration? LLM-specific observability tooling, which captures prompt/response pairs and agent decision traces, is an active and fast-moving category. LangSmith and Langfuse are current examples; evaluate options at implementation time. *Applies to Runtime AI systems.*
+
+---
+
+### Level 6: Strategic Governance
+
+*Managing the evolution of a system class over years.*
+
+**[Architecture Decision Records](https://adr.github.io/).** A lightweight format for documenting design decisions: what was decided, why, what alternatives were considered, and what the consequences are. ADRs are written at the moment of decision, not after the fact. Writing an ADR requires no technical knowledge, only the discipline to record decisions before moving on. For Runtime AI systems, ADRs should include model version rationale, human oversight decisions, and data boundary decisions, as these are the choices most likely to require revisiting as the system ages.
+
+**[Wardley Mapping](https://learnwardleymapping.com/).** A tool for deciding what to build versus what to buy or use as a commodity. Applied here: use Wardley Maps to identify which components of a system class are genuinely differentiated and which should be delegated to existing tools. The common failure mode is directing AI to build custom infrastructure for problems that commodity tooling already solves.
+
+**[Failure Mode and Effects Analysis (FMEA)](https://asq.org/quality-resources/fmea).** A systematic method for identifying failure modes before they occur: what could fail, why, and what the downstream effect would be. Apply this in Phase 3 when mapping unhappy paths and class boundary behavior. For Runtime AI systems, explicitly include LLM provider unavailability, model version deprecation, and cost overrun. These are routine events in the lifecycle of a production AI system, not edge cases. Domain knowledge produces better FMEA than technical knowledge does.
+
+---
+
+## Prerequisites
+
+Three capabilities support the transition from prompt engineer to Orchestrator. None requires coding experience.
+
+**Structural reading.** The ability to evaluate a system's design through diagrams, contracts, and ADRs. An Orchestrator who can read a C4 diagram, evaluate a class interface contract, and identify gaps in an ADR can govern a system they did not implement.
+
+**Abstraction discipline.** The ability to describe systems in terms of boundaries, interfaces, and data flows rather than features or implementation details. The Class Interface Contract requires this. You must define what the system does at its boundary before specifying how it does it.
+
+**Adversarial specification.** The ability to define failure cases, boundary scenarios, and edge cases that verification must cover, before implementation begins. AI-generated systems tend to handle the happy path. The Orchestrator's job is to specify the cases that stress-test whether the class definition holds under real conditions. Domain expertise in the problem class is the primary input here.
+
+---
+
+## Navigation
+
+**Levels 0 through 2** apply immediately to daily AI-directed work. Start here.
+
+**Levels 3 and 4** apply when designing multi-component or production systems. Work through these before Phase 3 of any high-risk SDLC engagement.
+
+**Levels 5 and 6** apply when managing systems over time or governing teams that use AI at scale.
+
+The curriculum is not a prerequisite for the manual. The SDLC framework can be applied before finishing the reading list. Each level provides context that makes the corresponding gate questions more legible.
