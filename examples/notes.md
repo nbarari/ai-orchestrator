@@ -96,3 +96,62 @@ The intercept rule addresses this by requiring the user to state context explici
 ### Implication for Examples
 
 Any ADR produced during the worked example should be generated through the checklist workflow, not through direct imperative prompts. If an ADR is generated without the checklist, note in the ADR's Context field that the reasoning was reconstructed and may not reflect the original decision accurately.
+
+---
+
+## Gate 0: Approval Requires a Named Individual, Not a Group
+
+**Discovered during:** Gate 0 worked example  
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+The Gate 0 approval block in the worked example uses "ai-orchestrator-framework contributors (worked example)" as the Approved By value. This is acceptable for a framework example but would be a gap in a live deployment.
+
+A group approval has no accountability when questions arise in Phase 7. If the Success Predicate is disputed or the Problem Class is challenged, "contributors" cannot be contacted, cannot recall the reasoning, and cannot confirm what was understood at the time of approval.
+
+### Implication for Template
+
+The `templates/gate-0-concept.md` Approved By field should include a note making this explicit:
+
+```
+**Approved by:** [Name of individual — not a team or group. 
+A group approval has no accountability at Phase 7.]
+```
+
+This applies to all gate worksheets, not only Gate 0. The same principle applies to the ADR template's Author field.
+
+### Fix
+
+Update gate worksheet templates and the ADR template in v0.2 to include this note inline. Add it to the generation requirements in `intercept.mdc` for ADRs: "Approved By and Author must be a named individual, not a team or group."
+
+---
+
+## Gate 0: Evidence Section in Worked Examples
+
+**Discovered during:** Gate 0 worked example  
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+The Evidence section of a gate worksheet requires observable signals — logs, tickets, measured time, error rates. A worked example cannot provide real telemetry without a live system.
+
+The resolution used in this example is to document the categories of evidence rather than real instances, and to note explicitly in the Gate Approval section that the checklist item is satisfied on the basis of evidence categories rather than attached telemetry.
+
+This is the correct approach for a worked example, but it creates a risk: a practitioner copying the example for a real deployment may leave the evidence section in its illustrative form without replacing it with real data.
+
+### Implication for Template
+
+The Evidence section in `templates/gate-0-concept.md` should include a warning:
+
+```
+If this is a worked example or template, note that explicitly in the 
+Gate Approval section. For a live deployment, replace illustrative 
+signal types with concrete references: system names, time ranges, 
+ticket IDs, or measured figures. The checklist item cannot be satisfied 
+by illustrative content alone in a production context.
+```
+
+### Fix
+
+Add this warning to `templates/gate-0-concept.md` in v0.2. Consider adding a similar note to the gate approval checklist item itself so it is visible at sign-off time.
