@@ -3,7 +3,7 @@
 **Project:** Document Classification Agent (Worked Example)
 **Date:** 2026-04-05
 **Author:** ai-orchestrator-framework contributors
-**Status:** Draft
+**Status:** Accepted
 
 **Gate 0 reference:** `examples/document-classification-agent/gate-0.md`
 
