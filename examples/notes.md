@@ -155,3 +155,64 @@ by illustrative content alone in a production context.
 ### Fix
 
 Add this warning to `templates/gate-0-concept.md` in v0.2. Consider adding a similar note to the gate approval checklist item itself so it is visible at sign-off time.
+
+---
+
+## Gate 1: Cost Model Checkbox Tension
+
+**Discovered during:** Gate 1 worked example
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+The "Operational cost model completed" checklist item is checked despite all
+figures being illustrative rather than measured. This mirrors the Gate 0
+evidence tension: the checkbox is satisfied on the basis of model structure
+(correct cost categories, correct scenarios, correct viability framing) rather
+than real numbers.
+
+### Implication for Template
+
+The gate-1-feasibility.md template should add a note to the cost model
+checklist item equivalent to the evidence note in gate-0-concept.md:
+
+> For a live deployment, this checklist item requires real figures — provider
+> pricing applied to measured token volumes at expected document lengths.
+> Illustrative figures satisfy the structure requirement only; a production
+> Gate 1 cannot proceed to Gate 2 without at least a rough order-of-magnitude
+> estimate grounded in actual intake data and current model pricing.
+
+### Fix
+
+Add this note to the Operational Cost Model section of
+`templates/gate-1-feasibility.md` in v0.2.
+
+---
+
+## Gate 1: Volume Profile Allows Multiple Distributions
+
+**Discovered during:** Gate 1 worked example
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+The Class Volume Analysis section uses checkboxes for volume distribution
+(Low and steady / Bursty / Continuous and high-volume) but the document
+classification agent is both bursty and continuous — two boxes checked
+simultaneously. The template implies mutually exclusive options but real
+systems often combine profiles.
+
+### Implication for Template
+
+The checkbox format creates a false choice. Replace it with a free-form
+field or change the framing to "select all that apply" with an explicit
+prompt to describe the relationship between profiles (e.g., continuous
+baseline with identifiable burst periods).
+
+### Fix
+
+Update the Class Volume Analysis section in `templates/gate-1-feasibility.md`
+to read "Select all that apply" and add a follow-up field:
+
+> **Distribution description:** How do these profiles interact? (e.g.,
+> continuous baseline of X with burst periods of Y at Z frequency)
