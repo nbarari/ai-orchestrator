@@ -6,30 +6,52 @@ alwaysApply: false
 
 # Contract Design Requirements
 
-This file is part of a project using the AI Orchestrator framework. When generating or modifying schemas, contracts, or API definitions, enforce the following.
+## STOP — Pre-Flight Required Before Any Schema or Contract Is Generated
 
-**Before generating a schema or contract:**
+Do not generate a schema, contract, or API definition until you have output the following checklist and the user has confirmed each item. This is not optional. Generating first and noting concerns afterward is a violation of this rule.
 
-1. Confirm the Problem Class for this system is documented. The contract must reflect the class definition, not exceed it.
-2. Confirm what constitutes a valid input and a valid output at the class level. If the user cannot state this, stop and resolve it before writing a schema.
-3. Define class boundary behavior explicitly: what happens when an input is adjacent to the class but outside it? This is a design decision, not an error condition.
+Output this checklist verbatim, then wait for the user to respond before writing any schema or contract:
 
-**Every field in the schema must have a stated reason for inclusion.** Fields without justification may be scope creep. If the user cannot explain why a field exists, do not include it.
+---
 
-**PII and sensitive data fields require explicit Data Boundary review before inclusion.** Examples include email addresses, user IDs, names, IP addresses, device identifiers, and any field that could identify a person. If a field of this type is requested, ask: is this data permitted to cross into any LLM call per the project's Data Boundary Declaration? If no declaration exists, flag it as a blocking issue before generating the schema.
+**Contract Pre-Flight Checklist**
 
-**Schema requirements:**
+Before this schema or contract is generated, confirm the following:
 
-- Include explicit rejection criteria: what does an invalid input look like, and what should the system do with it?
+**1. Problem Class**
+Is `docs/gate-0.md` present and does it define the Problem Class this contract serves?
+- [ ] Yes — link: `docs/gate-0.md`
+- [ ] No — Gate 0 is incomplete. This contract cannot be finalized until it exists.
+
+**2. Valid Input and Output**
+Can you state in plain language what a valid input looks like and what a valid output looks like at the class level?
+- [ ] Yes — state it here:
+- [ ] No — stop. The class definition is not complete enough to write a contract.
+
+**3. Class Boundary Behavior**
+What happens when the system receives an input that is adjacent to the class but outside it? This is a design decision, not an error condition.
+- [ ] Defined — state it here:
+- [ ] Not yet defined — stop. This must be decided before the contract is written.
+
+**4. PII and Sensitive Data**
+Does the proposed schema include any of the following: email addresses, user IDs, names, phone numbers, IP addresses, device identifiers, financial data, health data, or any field that could identify a person?
+- [ ] No — proceed
+- [ ] Yes — is this data covered by the project's Data Boundary Declaration in `docs/gate-2.md`?
+  - [ ] Yes — confirmed
+  - [ ] No declaration exists — this is a blocking issue. Do not include PII fields until the Data Boundary Declaration exists and explicitly permits them.
+
+**5. Field Justification**
+For each field in the proposed schema, can the user state why it exists? Fields without a documented reason may be scope creep.
+- [ ] All fields are justified — list them and their purpose here:
+- [ ] Some fields need justification — resolve before generating.
+
+---
+
+Once the user has confirmed all five items, generate the schema with these requirements applied:
+
+- Set `additionalProperties: false` unless there is a documented reason not to
+- Include explicit rejection criteria: what does an invalid input look like?
 - Version the contract. A contract without a version cannot be pinned or audited.
-- Set additionalProperties: false unless there is a documented reason not to.
-
-**For Runtime AI systems, Prompt Contracts additionally require:**
-
-- Input structure: what the prompt contains and in what format
-- Output structure: what a valid response looks like, including format and constraints
-- Boundary behavior: what the system does when the LLM returns output that violates the contract
-- Model version this contract was validated against
-- Data Boundary compliance: confirm no data crosses this boundary that is not covered by the project's Data Boundary Declaration
+- For Runtime AI systems, Prompt Contracts additionally require: input structure, output structure, boundary behavior on contract violation, model version validated against, and Data Boundary compliance confirmation per field.
 
 Do not generate a schema or contract that the user cannot explain in plain language. If they cannot explain it, the class definition is not yet complete.
