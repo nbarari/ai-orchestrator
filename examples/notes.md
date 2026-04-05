@@ -294,3 +294,30 @@ as the last section before Gate Approval, with fields for:
 - Any always-supervised label categories
 
 ---
+
+## Class Boundary Behavior: Deferring Route Values to Gate 4
+
+**Discovered during:** Gate 2 worked example
+**Phase:** Worked Example (v0.2)
+
+### Observation
+
+The class boundary behavior section defined system behavior for adjacent
+inputs while explicitly deferring specific route values to Gate 4 runbooks:
+"route to human triage or documented default low-risk bucket only if Gate 4
+runbooks define one — default is human queue."
+
+This is the correct pattern. Class boundary behavior defines what the system
+does (does not silently classify, routes to a defined path) without inventing
+specific route names or queue identifiers that belong in operational runbooks.
+
+### Implication for Template
+
+The gate-2-design.md class boundary behavior section should include a note:
+
+> Behavior statements may defer specific route values, queue names, or
+> threshold numbers to Gate 4 runbooks. The requirement is that the behavior
+> is defined (not left to implementation judgment) — not that all values are
+> pinned in this document.
+
+---
