@@ -13,8 +13,6 @@ The project needs a pinned Anthropic model identifier for **LLM-based document c
 
 At the time this ADR was recorded, `docs/gate-0.md` and `docs/gate-2.md` were not present in the repository. The Problem Class, Success Predicate, and Data Boundary Declaration should be aligned with this choice before any production Runtime AI path is activated.
 
-The current `llm-client.py` module implements deterministic keyword classification only; this decision applies to **planned or parallel** LLM classification, not to that local helper.
-
 ---
 
 ## Decision
@@ -26,8 +24,6 @@ All Prompt Contracts, logging configuration, and drift reviews for that workload
 ---
 
 ## Alternatives Considered
-
-*(incomplete — alternatives must be confirmed by the decision maker; do not infer from code.)*
 
 - No other models or providers have been formally documented as evaluated for this decision at the time of writing.
 
@@ -61,13 +57,9 @@ Revisit this ADR when any of the following occurs:
 
 **Model version rationale:**
 
-*(incomplete — document why this version was chosen over other Anthropic models or other providers once alternatives have been explicitly evaluated.)*
-
 Intended direction (not a substitute for a recorded evaluation): use a **Sonnet**-class model where classification requires reliable instruction following and structured outputs, with cost and latency between smaller and larger tiers; confirm against benchmarks and SLOs.
 
 **Human oversight level for affected actions:**
-
-*(incomplete — set per Human Oversight Model; tie to whether classification results trigger automated downstream actions.)*
 
 Examples for later resolution: **advisory** if humans always confirm routing; **supervised** if classification is shown before irreversible steps; **autonomous** only if scope and blast radius are explicitly accepted in gate documentation.
 

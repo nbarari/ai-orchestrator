@@ -244,3 +244,5 @@ The "Record completeness" table the AI appended to the ADR is a useful
 pattern for ADRs written under incomplete information. Consider adding it
 as an optional closing section to `templates/adr-template.md` so
 incomplete fields are explicitly flagged rather than silently omitted.
+
+---
