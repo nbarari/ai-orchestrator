@@ -216,3 +216,31 @@ to read "Select all that apply" and add a follow-up field:
 
 > **Distribution description:** How do these profiles interact? (e.g.,
 > continuous baseline of X with burst periods of Y at Z frequency)
+
+## ADR Output Path Not Specified in Pre-Flight
+
+**Discovered during:** ADR intercept validation testing
+**Phase:** IDE Integration (v0.1)
+
+### Observation
+
+ADR-001 was generated to `docs/adr/` rather than
+`examples/document-classification-agent/adr/` because the output path
+was not specified during the pre-flight checklist. The AI chose a
+reasonable default path based on convention, which was wrong for this
+project's structure.
+
+### Fix
+
+Add an output path question to the ADR pre-flight checklist in
+`intercept.mdc`:
+
+> **Output path:** Where should this ADR be created?
+> Confirm the exact file path before generating.
+
+### Additional Finding
+
+The "Record completeness" table the AI appended to the ADR is a useful
+pattern for ADRs written under incomplete information. Consider adding it
+as an optional closing section to `templates/adr-template.md` so
+incomplete fields are explicitly flagged rather than silently omitted.
