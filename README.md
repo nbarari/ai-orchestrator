@@ -160,4 +160,13 @@ The AI Deployment Mode (Build-Time, Runtime, or Both) is declared at Gate 0 and 
 
 ---
 
-`v0.1 — draft. Templates and worked examples in progress.`
+## Status
+
+`v0.1` is complete. See the [project roadmap](https://github.com/users/nbarari/projects/2) for what is planned.
+
+| Version | Focus | Status |
+|---|---|---|
+| v0.1 | Foundation — framework documents, templates, IDE integration | Complete |
+| v0.2 | Worked example — end-to-end document classification agent | In progress |
+| v0.3 | CLI and validation — gate enforcement tooling | Planned |
+| v1.0 | MCP server — framework as queryable tools | Planned |
