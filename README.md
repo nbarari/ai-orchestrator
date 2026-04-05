@@ -133,7 +133,17 @@ The AI Deployment Mode (Build-Time, Runtime, or Both) is declared at Gate 0 and 
 │   ├── adr-template.md
 │   └── prompt-contract.md
 ├── examples/
-│   └── README.md
+│   └── document-classification-agent/
+│       ├── gate-0.md
+│       ├── gate-1.md
+│       ├── gate-2.md
+│       ├── gate-3.md
+│       ├── gate-4.md
+│       ├── gate-5.md
+│       ├── contracts/
+│       ├── adr/
+│       ├── src/
+│       └── notes.md
 └── appendix/
     ├── glossary.md
     ├── rigor-by-risk.md
@@ -166,7 +176,8 @@ The AI Deployment Mode (Build-Time, Runtime, or Both) is declared at Gate 0 and 
 
 | Version | Focus | Status |
 |---|---|---|
-| v0.1 | Foundation — framework documents, templates, IDE integration | Complete |
-| v0.2 | Worked example — end-to-end document classification agent | In progress |
-| v0.3 | CLI and validation — gate enforcement tooling | Planned |
-| v1.0 | MCP server — framework as queryable tools | Planned |
+| v0.1 | Foundation — documents, templates, IDE integration | Complete |
+| v0.2 | Worked Example — document classification agent | Complete |
+| v0.3 | Gate Interview Agent — conversational gate facilitation | In progress |
+| v0.4 | CLI and Validation — gate enforcement tooling | Planned |
+| v1.0 | MCP Server — framework as queryable tools | Planned |
