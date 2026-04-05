@@ -11,6 +11,9 @@ Each template corresponds to a phase in `manual.md`. Complete the worksheet befo
 | `gate-2-design.md` | Phase 3 | Class Interface Contract, Data Boundary, Human Oversight Model |
 | `adr-template.md` | Phase 3 (ongoing) | Architecture Decision Records |
 | `prompt-contract.md` | Phase 3 (Runtime AI) | LLM call input/output contract |
+| `gate-3-verification.md` | Phase 5 | Class coverage, contract verification, behavioral evals, traceability |
+| `gate-4-operational.md` | Phase 6 | Runbooks, kill switches, rollback rehearsal, irreversible commitments |
+| `gate-5-postdeploy.md` | Phase 7 | Success Predicate audit, class drift, living document review, decommission |
 
 ## Usage
 
