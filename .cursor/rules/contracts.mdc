@@ -1,6 +1,6 @@
 ---
 description: Class Interface Contract and schema design requirements. Applied when working on data contracts, schemas, or API definitions.
-globs: "**/*.schema.json, **/*.contract.*, **/schemas/**, **/contracts/**, **/openapi.*, **/swagger.*"
+globs: "**/*.schema.json","**/*.contract.md","**/*.contract.yaml","**/*.contract.yml","**/schemas/**","**/contracts/**","**/openapi.yaml","**/openapi.yml","**/openapi.json","**/swagger.yaml","**/swagger.json"
 alwaysApply: false
 ---
 
@@ -14,11 +14,15 @@ This file is part of a project using the AI Orchestrator framework. When generat
 2. Confirm what constitutes a valid input and a valid output at the class level. If the user cannot state this, stop and resolve it before writing a schema.
 3. Define class boundary behavior explicitly: what happens when an input is adjacent to the class but outside it? This is a design decision, not an error condition.
 
+**Every field in the schema must have a stated reason for inclusion.** Fields without justification may be scope creep. If the user cannot explain why a field exists, do not include it.
+
+**PII and sensitive data fields require explicit Data Boundary review before inclusion.** Examples include email addresses, user IDs, names, IP addresses, device identifiers, and any field that could identify a person. If a field of this type is requested, ask: is this data permitted to cross into any LLM call per the project's Data Boundary Declaration? If no declaration exists, flag it as a blocking issue before generating the schema.
+
 **Schema requirements:**
 
-- Every field must have a stated reason for inclusion. Fields without justification may be scope creep.
 - Include explicit rejection criteria: what does an invalid input look like, and what should the system do with it?
 - Version the contract. A contract without a version cannot be pinned or audited.
+- Set additionalProperties: false unless there is a documented reason not to.
 
 **For Runtime AI systems, Prompt Contracts additionally require:**
 
