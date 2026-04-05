@@ -1,0 +1,31 @@
+---
+description: Class Interface Contract and schema design requirements. Applied when working on data contracts, schemas, or API definitions.
+globs: "**/*.schema.json, **/*.contract.*, **/schemas/**, **/contracts/**, **/openapi.*, **/swagger.*"
+alwaysApply: false
+---
+
+# Contract Design Requirements
+
+This file is part of a project using the AI Orchestrator framework. When generating or modifying schemas, contracts, or API definitions, enforce the following.
+
+**Before generating a schema or contract:**
+
+1. Confirm the Problem Class for this system is documented. The contract must reflect the class definition, not exceed it.
+2. Confirm what constitutes a valid input and a valid output at the class level. If the user cannot state this, stop and resolve it before writing a schema.
+3. Define class boundary behavior explicitly: what happens when an input is adjacent to the class but outside it? This is a design decision, not an error condition.
+
+**Schema requirements:**
+
+- Every field must have a stated reason for inclusion. Fields without justification may be scope creep.
+- Include explicit rejection criteria: what does an invalid input look like, and what should the system do with it?
+- Version the contract. A contract without a version cannot be pinned or audited.
+
+**For Runtime AI systems, Prompt Contracts additionally require:**
+
+- Input structure: what the prompt contains and in what format
+- Output structure: what a valid response looks like, including format and constraints
+- Boundary behavior: what the system does when the LLM returns output that violates the contract
+- Model version this contract was validated against
+- Data Boundary compliance: confirm no data crosses this boundary that is not covered by the project's Data Boundary Declaration
+
+Do not generate a schema or contract that the user cannot explain in plain language. If they cannot explain it, the class definition is not yet complete.

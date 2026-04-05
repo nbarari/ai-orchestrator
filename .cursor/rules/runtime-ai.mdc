@@ -1,0 +1,33 @@
+---
+description: Runtime AI gate requirements. Applied when working on LLM calls, agent actions, or AI pipeline components.
+globs: "**/llm/**, **/agents/**, **/prompts/**, **/*agent*.*, **/*llm*.*, **/*prompt*.*"
+alwaysApply: false
+---
+
+# Runtime AI Requirements
+
+This file is part of a project using the AI Orchestrator framework. Any LLM call, agent action, or AI pipeline component is subject to the following requirements before implementation proceeds.
+
+**Prompt Contract.** Every LLM call must have a documented Prompt Contract before code is written. If one does not exist, generate a draft for the user to review before generating the call implementation. The contract must specify:
+
+- Input structure and format
+- Expected output structure and constraints
+- Model version this contract is written for
+- Behavior when the output violates the contract
+- Data Boundary compliance confirmation
+
+**Human Oversight Model.** For each action this component can take, the oversight level must be defined:
+
+- Autonomous: AI acts without human confirmation
+- Supervised: human reviews before execution
+- Advisory: human decides, AI informs
+
+Do not implement autonomous actions for operations that are irreversible or carry significant blast radius without explicit approval from the user.
+
+**Fallback behavior.** Every LLM call must have a defined fallback for provider unavailability, rate limiting, and invalid output. Do not generate code where the failure path is an unhandled exception.
+
+**Data Boundary.** Before generating any code that sends data to an LLM, confirm that the data in question is covered by the project's Data Boundary Declaration. If no declaration exists, surface this as a blocking issue.
+
+**Model version.** Generated code should reference a specific model version, not a floating alias. Note to the user that pinning delays drift but does not prevent it, and that the Phase 7 Class Drift Audit should include re-validation when the pinned version is deprecated.
+
+**Observability.** Generated LLM call implementations must include structured logging of inputs and outputs unless the user explicitly states a reason not to log them. Confirm that the logging approach is compliant with the Data Boundary Declaration.

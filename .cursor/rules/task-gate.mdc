@@ -1,0 +1,32 @@
+---
+description: AI Orchestrator Task-Level Gate. Applied before any significant implementation change.
+globs:
+alwaysApply: true
+---
+
+# Task-Level Gate
+
+Before generating or modifying any code that touches the items below, work through these questions with the user. Do not proceed to implementation until each has a documented answer.
+
+**Significance Triggers.** Apply this gate when the task involves:
+- Data schemas or Class Interface Contracts
+- Public interfaces or APIs
+- Authentication or authorization logic
+- New external dependencies
+- LLM calls, agent actions, or nondeterministic execution paths
+
+**Gate Questions**
+
+1. **Class Alignment.** Does this change serve the defined Success Predicate, or does it expand the problem class without approval?
+2. **Compatibility.** Is this change backward compatible with existing state?
+3. **Idempotency.** What happens if this logic executes more than once?
+4. **Error Path.** What is the recovery path if this fails mid-execution?
+5. **Scope.** Does this implementation exceed the Minimum Class Coverage defined for this project?
+6. **Data Boundary.** (Runtime AI only) Does this change introduce data into an LLM call that is not covered by the project's Data Boundary Declaration?
+
+**After implementation**, confirm:
+- What drift, if any, occurred from the original design?
+- Is that drift documented?
+- Does the implementation contradict the approved architecture or expand the class definition? If yes, escalate before merging.
+
+If the user has not defined a Problem Class, Success Predicate, or AI Deployment Mode for this project, surface that gap before continuing. These are Gate 0 requirements and must exist before implementation begins.
