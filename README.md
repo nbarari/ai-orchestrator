@@ -109,18 +109,6 @@ The AI Deployment Mode (Build-Time, Runtime, or Both) is declared at Gate 0 and 
 ├── README.md
 ├── manual.md                       # The 7-phase SDLC Manual
 ├── curriculum.md                   # Reading list, Levels 0-6
-├── templates/
-│   ├── gate-0-concept.md           # Phase 1 worksheet
-│   ├── gate-1-feasibility.md       # Phase 2 worksheet
-│   ├── gate-2-design.md            # Phase 3 worksheet
-│   ├── adr-template.md             # Architecture Decision Record
-│   └── prompt-contract.md          # LLM interface contract (Runtime AI)
-├── examples/
-│   └── [worked example]
-└── appendix/
-    ├── glossary.md
-    ├── rigor-by-risk.md
-    └── deployment-mode-reference.md
 ```
 
 ---
